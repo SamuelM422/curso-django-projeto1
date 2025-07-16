@@ -1,0 +1,9 @@
+{% extends "global/base.html" %}
+
+{% block title %} {{recipe.title}} | 123{% endblock title %}
+
+{% block content %}
+    <div class="main-content main-content-detail container">
+        {% include "recipes/partials/recipe.html" %}
+    </div>
+{% endblock content %}
