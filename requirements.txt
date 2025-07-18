@@ -1,3 +1,4 @@
 django-stubs[compatible-mypy]
 faker
 django
+pillow
