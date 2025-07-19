@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Recipe, Authors
+from .models import Category, Recipe
 
 # Register your models here.
 class CategoryAdmin(admin.ModelAdmin):
@@ -8,9 +8,5 @@ class CategoryAdmin(admin.ModelAdmin):
 class RecipeAdmin(admin.ModelAdmin):
     pass
 
-class AuthorsAdmin(admin.ModelAdmin):
-    pass
-
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Recipe, RecipeAdmin)
-admin.site.register(Authors, AuthorsAdmin)

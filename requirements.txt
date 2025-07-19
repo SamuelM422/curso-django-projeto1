@@ -2,3 +2,5 @@ django-stubs[compatible-mypy]
 faker
 django
 pillow
+pytest
+pytest-django
