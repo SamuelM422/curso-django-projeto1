@@ -4,3 +4,5 @@ django
 pillow
 pytest
 pytest-django
+pytest-cov
+coverage

@@ -51,3 +51,9 @@ class RecipeModelTest(RecipeTestBase):
     def test_recipe_is_published_is_false_by_default(self):
         recipe = self.make_recipe_not_default()
         self.assertFalse(recipe.is_published)
+
+    def test_recipe_string_representation(self):
+        self.recipe.title = 'Recipe Title'
+        self.recipe.full_clean()
+        self.recipe.save()
+        self.assertEqual(str(self.recipe), self.recipe.title)
