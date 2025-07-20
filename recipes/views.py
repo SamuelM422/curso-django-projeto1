@@ -3,13 +3,14 @@ from recipes.models import Recipe
 
 # Create your views here.
 def home(request):
-    recipes = Recipe.objects.filter(is_published=True).order_by('-id')
+    published_recipes = Recipe.objects.filter(is_published=True).order_by('-id')
     return render(request, "recipes/pages/home.html", context={
-        'recipes': recipes
+        'recipes': published_recipes
     })
 
 def category(request, category_id):
-    recipes = get_list_or_404(
+    # noinspection PyTypeChecker
+    published_recipes_by_category = get_list_or_404(
         Recipe.objects.filter(
             category__id=category_id, 
             is_published=True)
@@ -17,8 +18,8 @@ def category(request, category_id):
     )
 
     return render(request, "recipes/pages/category.html", context={
-        'recipes': recipes,
-        'title': recipes[0].category.name # type: ignore
+        'recipes': published_recipes_by_category,
+        'title': published_recipes_by_category[0].category.name # type: ignore
     })
 
 def recipes(request, recipe_id):
