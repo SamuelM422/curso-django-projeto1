@@ -16,8 +16,14 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
       <excludeFolder url="file://$MODULE_DIR$/venv" />
+      <excludeFolder url="file://$MODULE_DIR$/.idea/dataSources" />
+      <excludeFolder url="file://$MODULE_DIR$/htmlcov" />
+      <excludeFolder url="file://$MODULE_DIR$/media" />
+      <excludeFolder url="file://$MODULE_DIR$/static/admin" />
+      <excludeFolder url="file://$MODULE_DIR$/static/global" />
+      <excludeFolder url="file://$MODULE_DIR$/static/recipes" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.13 (curso-django-projeto1) (2)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.13 (projeto1)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="PyDocumentationSettings">
