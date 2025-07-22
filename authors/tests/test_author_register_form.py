@@ -2,7 +2,7 @@ from unittest import TestCase
 from django.test import TestCase as DjangoTestCase
 from django.urls import reverse
 from django.contrib.messages import get_messages
-from authors.forms import RegisterForm
+from authors.forms.register_form import RegisterForm
 
 class AuthorRegisterFormIntegrationTest(DjangoTestCase):
     def setUp(self):
@@ -18,7 +18,7 @@ class AuthorRegisterFormIntegrationTest(DjangoTestCase):
         return super().setUp()
 
     def test_form_must_be_valid(self):
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
         response = self.client.post(url, self.form_data, follow=True)
         messages = [m.message for m in list(get_messages(response.wsgi_request))]
         self.assertIn('Account created successfully', messages)
@@ -33,7 +33,7 @@ class AuthorRegisterFormIntegrationTest(DjangoTestCase):
             ('email', 'Please enter your email address.'),
         )
 
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
 
         for field, error_msg in fields:
             with self.subTest(field=field, error_msg=error_msg):
@@ -43,43 +43,49 @@ class AuthorRegisterFormIntegrationTest(DjangoTestCase):
 
     def test_username_field_min_length_should_be_4(self):
         self.form_data['username'] = 'us'
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
         response = self.client.post(url, self.form_data, follow=True)
         self.assertIn('Ensure this value has at least 4 characters.',
                       response.context['form'].errors.get('username', ''))
 
     def test_username_field_max_length_should_be_65(self):
         self.form_data['username'] = 'A' * 66
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
         response = self.client.post(url, self.form_data, follow=True)
         self.assertIn('Ensure this value has at most 65 characters.',
                       response.context['form'].errors.get('username', ''))
 
     def test_password_field_have_lower_upper_case_letters_and_numbers(self):
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
         self.form_data['password'] = 'weakpassword'
         response = self.client.post(url, self.form_data, follow=True)
         self.assertIn('Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number and one special character.',
                       response.context['form'].errors.get('password', ''))
 
     def test_password_and_confirmation_must_be_equal(self):
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
         self.form_data['password2'] = 'Str0ngP@ssword2'
         response = self.client.post(url, self.form_data, follow=True)
         self.assertIn('Passwords do not match',
                       response.context['form'].errors.get('password2', ''))
 
     def test_send_get_request_to_registration_create_view_returns_404(self):
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
     def test_create_user_with_email_that_already_exists(self):
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
         self.client.post(url, self.form_data, follow=True)
         response = self.client.post(url, self.form_data, follow=True)
         self.assertIn('This email address is already in use.',
                       response.context['form'].errors.get('email', ''))
+
+    def test_user_created_can_login(self):
+        url = reverse('authors:register_create')
+        self.client.post(url, self.form_data, follow=True)
+        response = self.client.login(username=self.form_data['username'], password=self.form_data['password'])
+        self.assertTrue(response)
 
 class AuthorRegisterFormUnitTest(TestCase):
     def test_fields_placeholder_are_correct(self):
