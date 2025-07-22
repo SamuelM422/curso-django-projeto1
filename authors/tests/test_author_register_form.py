@@ -74,6 +74,13 @@ class AuthorRegisterFormIntegrationTest(DjangoTestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
+    def test_create_user_with_email_that_already_exists(self):
+        url = reverse('authors:create')
+        self.client.post(url, self.form_data, follow=True)
+        response = self.client.post(url, self.form_data, follow=True)
+        self.assertIn('This email address is already in use.',
+                      response.context['form'].errors.get('email', ''))
+
 class AuthorRegisterFormUnitTest(TestCase):
     def test_fields_placeholder_are_correct(self):
         form = RegisterForm()
