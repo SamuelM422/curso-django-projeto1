@@ -4,7 +4,8 @@ from authors.forms.login_form import LoginForm
 from django.http import Http404 # type: ignore
 from django.contrib import messages
 from django.urls import reverse
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def register_view(request):
@@ -29,6 +30,7 @@ def register_create(request):
         messages.success(request, 'Account created successfully')
 
         del(request.session['register_form_data'])
+        return redirect('authors:login')
         
     return redirect('authors:register')
 
@@ -37,6 +39,7 @@ def login_view(request):
     return render(request, 'authors/pages/login.html',
                   context={
                       'form': form,
+                      'form_action': reverse('authors:login_create')
                   })
 
 def login_create(request):
@@ -59,4 +62,15 @@ def login_create(request):
 
     else:
         messages.error(request, 'Invalid username or password.')
+    return redirect('authors:login')
+
+@login_required(login_url='authors:login', redirect_field_name='next')
+def logout_view(request):
+    if not request.POST:
+        return redirect('authors:login')
+
+    if request.POST.get('username') != request.user.username:
+        return redirect('authors:login')
+
+    logout(request)
     return redirect('authors:login')
