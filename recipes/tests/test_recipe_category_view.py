@@ -21,3 +21,10 @@ class RecipeCategoryViewTest(RecipeTestBase):
         response = self.client.get(reverse('recipes:category', kwargs={'category_id': recipe.category.id}))
 
         self.assertEqual(response.status_code, 404)
+
+    def test_recipe_category_template_returns_correct_recipe_data(self):
+        recipe = self.make_recipe(title='This is a category page - It loads one recipe')
+        response = self.client.get(reverse('recipes:category', kwargs={'category_id': recipe.category.id}))
+        content = response.content.decode('utf-8')
+
+        self.assertIn('This is a category page - It loads one recipe', content)

@@ -1,65 +1,48 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+import re
 
-def add_attr(field, attr_name, attr_new_val):
-    existing_attr = field.widget.attrs.get(attr_name)
-    field.widget.attrs[attr_name] = f'{existing_attr} {attr_new_val}'.strip()
+def strong_password(password):
+    regex = re.compile(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$')
 
-def set_placeholder(field, placeholder_val):
-    field.widget.attrs['placeholder'] = placeholder_val
+    if not regex.match(password):
+        raise ValidationError(
+            'Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number and one special character.',
+            code='invalid'
+        )
 
 class RegisterForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        set_placeholder(self.fields['first_name'], 'Type your first name here')
-        set_placeholder(self.fields['email'], 'Your e-mail address')
-        set_placeholder(self.fields['username'], 'Ex.: John')
-        set_placeholder(self.fields['last_name'], 'Ex.: Doe')
-
+    username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Type your username here'}),
+                               error_messages={'required': 'This field is required.',
+                                                'unique': 'A user with that username already exists.',
+                                               'min_length': 'Ensure this value has at least 4 characters.',
+                                               'max_length': 'Ensure this value has at most 65 characters.'},
+                                label='Username',
+                               min_length=4,
+                               max_length=65)
+    first_name = forms.CharField(error_messages={'required': 'Please enter your first name.'},
+                                 widget=forms.TextInput(attrs={'placeholder': 'Ex.: John'}),
+                                 label='First Name')
+    last_name = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Ex.: Doe'}),
+                                error_messages={'required': 'Please enter your last name.'},
+                                label='Last Name')
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Your e-mail address'}),
+                             error_messages={'required': 'Please enter your email address.'},
+                             label='Email',
+                             help_text='Required. Inform a valid email address.')
     password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Your password here'}),
                                error_messages={'required': 'Please enter your password.'},
-                               help_text='Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.')
-    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Type your password again here'}))
+                               help_text='Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.',
+                               validators=[strong_password],
+                               label='Password')
+    password2 = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Please enter your password again.'}),
+                                error_messages={'required': 'Please enter your password again.'})
+
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'email', 'password']
         # exclude = ['first_name']
-
-        labels = {
-            'username': 'Username',
-            'email': 'Email',
-            'password': 'Password',
-            'first_name': 'First Name',
-            'last_name': 'Last Name',
-        }
-
-        help_texts = {
-            'email': 'Required. Inform a valid email address.',
-        }
-
-        error_messages = {
-            'username': {
-                'required': 'This field is required.',
-                'unique': 'A user with that username already exists.',
-            }
-        }
-
-        widgets = {
-            'first_name': forms.TextInput(attrs={'placeholder': 'Type your first name here'}),
-            'password': forms.PasswordInput(attrs={'placeholder': 'Type your password here'}),
-        }
-
-    def clean_password(self):
-        data = self.cleaned_data.get('password')
-
-        if 'password2' in self.cleaned_data:
-            raise ValidationError(
-                '"password2" is in your password',
-                code='invalid'
-            )
-
-        return data
 
     def clean(self):
         cleaned_data = super().clean()
