@@ -20,7 +20,8 @@ class RegisterForm(forms.ModelForm):
                                 error_messages={'required': 'Please enter your last name.'},
                                 label='Last Name')
     email = forms.EmailField(widget=forms.EmailInput(attrs={'placeholder': 'Your e-mail address'}),
-                             error_messages={'required': 'Please enter your email address.'},
+                             error_messages={'required': 'Please enter your email address.',
+                                             'invalid': 'Please enter a valid email address.'},
                              label='Email',
                              help_text='Required. Inform a valid email address.')
     password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Your password here'}),
