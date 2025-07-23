@@ -2,8 +2,6 @@
 branch = True
 omit =
     */venv/*
-    */test_*.py
-    */tests/*
     */manage.py
     */utils/*
     */migrations/*
