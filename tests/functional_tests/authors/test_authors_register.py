@@ -96,3 +96,22 @@ class AuthorsRegisterTest(AuthorsBaseTest):
 
         self.form_field_test_with_callback(callback_password)
 
+    def test_valid_form_test(self):
+        self.browser.get(self.live_server_url + reverse('authors:register'))
+        form = self.get_form(self.browser)
+
+        fields = (
+            ('Ex.: John', 'John'),
+            ('Ex.: Doe', 'Doe'),
+            ('Type your username here', 'johndoe'),
+            ('Your e-mail address', 'johndoe@email.com'),
+            ('Your password here', 'StrongP@ssword1'),
+            ('Please enter your password again.', 'StrongP@ssword1'),
+        )
+
+        for placeholder, value in fields:
+            self.get_by_placeholder(form, placeholder).send_keys(value)
+
+        form.submit()
+
+        self.assertIn('Account created successfully', self.browser.find_element(By.TAG_NAME, 'body').text)
