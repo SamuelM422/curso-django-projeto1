@@ -1,9 +1,9 @@
+import time
 from tests.functional_tests.recipes.base import RecipeBaseFunctionalTest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from unittest.mock import patch
 import pytest
-import time
 
 @pytest.mark.functional_test
 class RecipeHomePageFunctionalTest(RecipeBaseFunctionalTest):
@@ -24,6 +24,7 @@ class RecipeHomePageFunctionalTest(RecipeBaseFunctionalTest):
 
         # User opening the browser and selecting the search bar
         self.browser.get(self.live_server_url)
+
         search_input = self.browser.find_element(
             By.XPATH,
             '//input[@placeholder="Search recipes here"]'
@@ -33,8 +34,11 @@ class RecipeHomePageFunctionalTest(RecipeBaseFunctionalTest):
         search_input.send_keys(recipes[0].title)
         search_input.send_keys(Keys.ENTER)
 
+        time.sleep(5)
+
         # Assertion
-        self.assertIn(recipes[0].title, self.browser.find_element(By.TAG_NAME, 'body').text)
+        body = self.browser.find_element(By.TAG_NAME, 'body')
+        self.assertIn(recipes[0].title, body.text)
 
     @patch('recipes.views.PER_PAGE', 2)
     def test_recipe_home_page_pagination(self):
