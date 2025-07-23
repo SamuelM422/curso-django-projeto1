@@ -1,15 +1,9 @@
-import time
-
 from tests.functional_tests.authors.base import AuthorsBaseTest
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from django.urls import reverse
 
 class AuthorsRegisterTest(AuthorsBaseTest):
-    @staticmethod
-    def get_by_placeholder(web_element, placeholder):
-        return web_element.find_element(By.XPATH, f'//input[@placeholder="{placeholder}"]')
-
     @staticmethod
     def fill_form_dummy_data(form):
         fields = form.find_elements(By.TAG_NAME, 'input')

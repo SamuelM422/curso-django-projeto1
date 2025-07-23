@@ -7,8 +7,8 @@
 {% block content %}
 	<div class="main-content center container">
         <h2>Login</h2>
-    {% include 'global/partials/messages.html' %}
-    {% if request.user.is_authenticated %}
+        {% include 'global/partials/messages.html' %}
+        {% if request.user.is_authenticated %}
     	<div>
             <span>You are logged in with {{ request.user.username }}. Please,</span>
             <form action="{% url 'authors:logout' %}" method="post" style="display: inline;">
