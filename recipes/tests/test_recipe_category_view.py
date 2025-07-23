@@ -1,10 +1,10 @@
 from django.urls import reverse, resolve
 from recipes import views
-from .test_recipe_base import RecipeTestBase
+from .test_recipe_base import RecipeMixIn
 from recipes.models import Recipe
 
 # Create your tests here.
-class RecipeCategoryViewTest(RecipeTestBase):
+class RecipeCategoryViewTest(RecipeMixIn):
     def test_recipe_category_view_function_is_correct(self):
         view = resolve(reverse('recipes:category', kwargs={'category_id': 1}))
 

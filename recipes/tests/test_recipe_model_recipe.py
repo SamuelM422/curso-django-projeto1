@@ -1,7 +1,7 @@
-from .test_recipe_base import RecipeTestBase, Recipe
+from .test_recipe_base import RecipeMixIn, Recipe
 from django.core.exceptions import ValidationError
 
-class RecipeModelTest(RecipeTestBase):
+class RecipeModelTest(RecipeMixIn):
     def setUp(self):
         self.recipe = self.make_recipe()
         return super().setUp()

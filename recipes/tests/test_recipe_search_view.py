@@ -1,8 +1,8 @@
 from django.urls import reverse
-from .test_recipe_base import RecipeTestBase
+from .test_recipe_base import RecipeMixIn
 
 # Create your tests here.
-class RecipeSearchViewTest(RecipeTestBase):
+class RecipeSearchViewTest(RecipeMixIn):
     def test_recipe_search_raises_404_if_no_search_term(self):
         response = self.client.get(reverse('recipes:search') + '?q=++')
         self.assertEqual(response.status_code, 404)

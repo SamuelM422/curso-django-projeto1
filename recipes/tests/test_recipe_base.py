@@ -1,7 +1,8 @@
 from django.test import TestCase
 from recipes.models import Recipe, User, Category
 
-class RecipeTestBase(TestCase):
+
+class RecipeMixIn(TestCase):
     @staticmethod
     def make_category(name='Category'):
         return Category.objects.create(name=name)
@@ -59,3 +60,13 @@ class RecipeTestBase(TestCase):
             is_published=is_published,
             cover=cover
         )
+
+    def make_recipes(self, qty=10):
+        recipes = []
+        for i in range(qty):
+            kwargs = {'slug': f'recipe-slug-{i}',
+                      'title': f'Recipe Title {i}',
+                      'author_data': {'username': f'author-{i}'}}
+            recipe = self.make_recipe(**kwargs)
+            recipes.append(recipe)
+        return recipes

@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
-from .test_recipe_base import RecipeTestBase
+from .test_recipe_base import RecipeMixIn
 
-class RecipeCategoryModelTest(RecipeTestBase):
+class RecipeCategoryModelTest(RecipeMixIn):
     def setUp(self):
         self.category = self.make_category()
 

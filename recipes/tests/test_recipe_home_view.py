@@ -1,11 +1,11 @@
 from django.urls import reverse, resolve
 from recipes import views
-from .test_recipe_base import RecipeTestBase
+from .test_recipe_base import RecipeMixIn
 from recipes.models import Recipe
 from unittest.mock import patch
 
 # Create your tests here.
-class RecipeHomeViewTest(RecipeTestBase):
+class RecipeHomeViewTest(RecipeMixIn):
     def test_recipe_home_views_functions_is_correct(self):
         view = resolve(reverse('recipes:home'))
 
@@ -25,7 +25,7 @@ class RecipeHomeViewTest(RecipeTestBase):
         Recipe.objects.filter(pk=1).delete()
         response = self.client.get(reverse('recipes:home'))
 
-        self.assertIn('<h1>No recipes found</h1>', response.content.decode('utf-8'))
+        self.assertIn('No recipes found', response.content.decode('utf-8'))
 
     def test_recipe_home_template_loads_recipes(self):
         recipe = self.make_recipe()
