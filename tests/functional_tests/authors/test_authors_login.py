@@ -1,4 +1,3 @@
-from selenium.webdriver import Keys
 from tests.functional_tests.authors.base import AuthorsBaseTest
 from django.contrib.auth.models import User
 from django.urls import reverse
