@@ -9,4 +9,6 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('login/create/', views.login_create, name='login_create'),
     path('logout/', views.logout_view, name='logout'),
+    path('dashboard/', views.dashboard_view, name='dashboard'),
+    path('dashboard/<int:pk>/edit', views.dashboard_recipe, name='dashboard_recipe_edit')
 ]

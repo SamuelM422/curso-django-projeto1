@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
-from authors.forms.register_form import RegisterForm
-from authors.forms.login_form import LoginForm
 from django.http import Http404 # type: ignore
-from django.contrib import messages
 from django.urls import reverse
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from authors.forms.register_form import RegisterForm
+from authors.forms.login_form import LoginForm
+from authors.forms.recipe_form import AuthorRecipeForm
+from recipes.models import Recipe
 
 # Create your views here.
 def register_view(request):
@@ -57,6 +59,7 @@ def login_create(request):
         if authenticated_user is not None:
             messages.success(request, 'You have been logged in successfully')
             login(request, authenticated_user)
+            return redirect('authors:dashboard')
         else:
             messages.error(request, 'Invalid credentials. Please try again.')
 
@@ -77,3 +80,38 @@ def logout_view(request):
     messages.success(request, 'You have been logged out successfully.')
     logout(request)
     return redirect('authors:login')
+
+@login_required(login_url='authors:login', redirect_field_name='next')
+def dashboard_view(request):
+    recipes = Recipe.objects.filter(author=request.user, is_published=False)
+    return render(request, 'authors/pages/dashboard.html',
+                  context={'recipes': recipes})
+
+@login_required(login_url='authors:login', redirect_field_name='next')
+def dashboard_recipe(request, pk):
+    recipe = Recipe.objects.filter(author=request.user, is_published=False, pk=pk)
+
+    if not recipe:
+        raise Http404()
+
+    form = AuthorRecipeForm(
+        request.POST or None,
+        files=request.FILES or None,
+        instance=recipe[0]
+    )
+
+    if form.is_valid():
+        recipe = form.save(commit=False)
+
+        recipe.author = request.user
+        recipe.preparation_steps_is_html = False
+        recipe.is_published = False
+
+        recipe.save()
+
+        messages.success(request, 'Recipe updated successfully')
+
+        return redirect(reverse('authors:dashboard_recipe_edit', kwargs={'pk': pk}))
+
+    return render(request, 'authors/pages/dashboard_recipe.html',
+                  context={'form': form})
