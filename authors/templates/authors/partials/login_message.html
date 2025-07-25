@@ -1,6 +1,8 @@
 {% if request.user.is_authenticated %}
     <div class="login-message">
-        <span>You are logged in with {{ request.user.username }}. See your </span>
+        <span>You are logged in with {{ request.user.username }}. </span>
+        <a href="{% url 'authors:dashboard_recipe_new' %}">Create a new recipe,</a>
+        <span> see your </span>
         <a href="{% url 'authors:dashboard' %}">recipes</a>
         <span> or</span>
         <form action="{% url 'authors:logout' %}" method="post" style="display: inline;">
