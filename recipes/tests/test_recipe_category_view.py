@@ -1,5 +1,5 @@
 from django.urls import reverse, resolve
-from recipes import views
+import recipes.views.class_based_views as class_based_views
 from .test_recipe_base import RecipeMixIn
 from recipes.models import Recipe
 
@@ -8,7 +8,7 @@ class RecipeCategoryViewTest(RecipeMixIn):
     def test_recipe_category_view_function_is_correct(self):
         view = resolve(reverse('recipes:category', kwargs={'category_id': 1}))
 
-        self.assertIs(view.func, views.category)
+        self.assertIs(view.func.view_class, class_based_views.RecipeListViewCategory) # type: ignore
 
     def test_recipe_category_view_returns_404_if_no_recipes_found(self):
         Recipe.objects.filter(pk=1).delete()

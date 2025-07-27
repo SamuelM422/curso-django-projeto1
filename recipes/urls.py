@@ -1,11 +1,11 @@
 from django.urls import path
-from . import views
+import recipes.views.class_based_views as class_based_views
 
 app_name = 'recipes'
 
 urlpatterns = [
-    path("", views.home, name="home"),
-    path('recipes/search/', views.search, name='search'),
-    path('recipes/category/<int:category_id>/', views.category, name='category'),
-    path("recipes/<int:recipe_id>/", views.recipes, name="recipe"),
+    path("", class_based_views.RecipeListViewHome.as_view(), name="home"),
+    path('recipes/search/', class_based_views.RecipeListViewSearch.as_view(), name='search'),
+    path('recipes/category/<int:category_id>/', class_based_views.RecipeListViewCategory.as_view(), name='category'),
+    path("recipes/<int:pk>/", class_based_views.RecipeDetailView.as_view(), name="recipe"),
 ]

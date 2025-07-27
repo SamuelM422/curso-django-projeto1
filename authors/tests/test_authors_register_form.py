@@ -59,7 +59,8 @@ class AuthorRegisterFormIntegrationTest(DjangoTestCase):
         url = reverse('authors:register_create')
         self.form_data['password'] = 'weakpassword'
         response = self.client.post(url, self.form_data, follow=True)
-        self.assertIn('Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number and one special character.',
+        self.assertIn('Password must have at least one uppercase letter, one lowercase letter and one number. '
+                      'The length should be at least 8 characters.',
                       response.context['form'].errors.get('password', ''))
 
     def test_password_and_confirmation_must_be_equal(self):

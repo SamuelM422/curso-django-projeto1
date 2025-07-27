@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse, resolve
-from recipes import views
+import recipes.views.class_based_views as cl
 
 # Create your tests here.
 class RecipeURLsTest(TestCase):
@@ -13,7 +13,7 @@ class RecipeURLsTest(TestCase):
         self.assertEqual(url, '/recipes/category/1/')
 
     def test_recipe_detail_url_is_correct(self):
-        url = reverse('recipes:recipe', kwargs={'recipe_id': 1})
+        url = reverse('recipes:recipe', kwargs={'pk': 1})
         self.assertEqual(url, '/recipes/1/')
 
     def test_recipe_search_url_is_correct(self):
@@ -23,7 +23,7 @@ class RecipeURLsTest(TestCase):
     def test_recipe_search_uses_correct_view_function(self):
         url = reverse('recipes:search')
         resolved = resolve(url)
-        self.assertIs(resolved.func, views.search)
+        self.assertIs(resolved.func.view_class, cl.RecipeListViewSearch) # type: ignore
 
     def test_recipe_search_template_is_correct(self):
         response = self.client.get(reverse('recipes:search') + '?q=test')

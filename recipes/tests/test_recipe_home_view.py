@@ -1,5 +1,5 @@
 from django.urls import reverse, resolve
-from recipes import views
+import recipes.views.class_based_views as class_based_views
 from .test_recipe_base import RecipeMixIn
 from recipes.models import Recipe
 from unittest.mock import patch
@@ -9,7 +9,7 @@ class RecipeHomeViewTest(RecipeMixIn):
     def test_recipe_home_views_functions_is_correct(self):
         view = resolve(reverse('recipes:home'))
 
-        self.assertIs(view.func, views.home)
+        self.assertIs(view.func.view_class, class_based_views.RecipeListViewHome) # type: ignore
 
     def test_recipe_home_view_returns_status_code_200_OK(self):
         response = self.client.get(reverse('recipes:home'))
@@ -53,7 +53,7 @@ class RecipeHomeViewTest(RecipeMixIn):
             }
             self.make_recipe(**kwargs)
 
-        with patch('recipes.views.PER_PAGE', 3):
+        with patch('recipes.views.class_based_views.PER_PAGE', 3):
             response = self.client.get(reverse('recipes:home'))
             recipes = response.context['recipes']
             paginator = recipes.paginator
