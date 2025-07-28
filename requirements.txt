@@ -6,4 +6,5 @@ pytest
 pytest-django
 coverage
 python-dotenv
+pytest-dotenv
 selenium

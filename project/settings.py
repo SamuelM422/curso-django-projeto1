@@ -17,7 +17,6 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
@@ -27,7 +26,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'INSECURE')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True if os.getenv('DEBUG') == '1' else False
 
-ALLOWED_HOSTS = []  # type: ignore
+ALLOWED_HOSTS = ['*']  # type: ignore
 
 # Application definition
 
@@ -79,8 +78,12 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': os.getenv('DATABASE_ENGINE'),
+        'NAME': os.getenv('DATABASE_NAME'),
+        'USER': os.getenv('DATABASE_USER'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'HOST': os.getenv('DATABASE_HOST'),
+        'PORT': os.getenv('DATABASE_PORT'),
     }
 }
 
