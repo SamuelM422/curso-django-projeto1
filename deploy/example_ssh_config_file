@@ -1,0 +1,4 @@
+Host <SHORTCUT_NAME>
+    HostName <HOST>
+    User <USER>
+    IdentityFile <PATH_OF_SSH_KEY> (~/.ssh/id_rsa)
