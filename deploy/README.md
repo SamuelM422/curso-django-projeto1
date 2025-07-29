@@ -142,6 +142,13 @@ pip install psycopg2
 pip install gunicorn
 ```
 
+## Extra: Se o `nano` não estiver instalado
+
+```
+sudo apt update
+sudo apt install nano
+```
+
 ## Configurando o nginx
 
 Use o arquivo e as explicações disponibilizadas na aula.
