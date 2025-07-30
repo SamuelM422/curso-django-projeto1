@@ -40,7 +40,7 @@ class RecipeHomePageFunctionalTest(RecipeBaseFunctionalTest):
         body = self.browser.find_element(By.TAG_NAME, 'body')
         self.assertIn(recipes[0].title, body.text)
 
-    @patch('recipes.views.class_based_views.PER_PAGE', 2)
+    @patch('recipes.views.base.PER_PAGE', 2)
     def test_recipe_home_page_pagination(self):
         # Creating recipes
         self.make_recipes(10)

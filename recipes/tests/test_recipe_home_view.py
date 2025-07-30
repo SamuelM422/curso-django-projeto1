@@ -53,7 +53,7 @@ class RecipeHomeViewTest(RecipeMixIn):
             }
             self.make_recipe(**kwargs)
 
-        with patch('recipes.views.class_based_views.PER_PAGE', 3):
+        with patch('recipes.views.base.PER_PAGE', 3):
             response = self.client.get(reverse('recipes:home'))
             recipes = response.context['recipes']
             paginator = recipes.paginator
