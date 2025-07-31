@@ -8,4 +8,6 @@ urlpatterns = [
     path('recipes/search/', class_based_views.RecipeListViewSearch.as_view(), name='search'),
     path('recipes/category/<int:category_id>/', class_based_views.RecipeListViewCategory.as_view(), name='category'),
     path("recipes/<int:pk>/", class_based_views.RecipeDetailView.as_view(), name="recipe"),
+    path('recipes/api/v1/', class_based_views.RecipeListViewApi.as_view(), name='recipes_api_v1'),
+    path('recipes/api/v1/<int:pk>/', class_based_views.RecipeDetailApi.as_view(), name='recipes_api_v1_detail'),
 ]

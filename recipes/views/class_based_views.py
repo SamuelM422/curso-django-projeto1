@@ -3,10 +3,20 @@ from recipes.models import Recipe
 from recipes.views.base import RecipeListViewBase
 from django.views.generic import DetailView
 from django.db.models import Q
+from django.http import JsonResponse
+from django.forms.models import model_to_dict
 
 
 class RecipeListViewHome(RecipeListViewBase):
     template_name = 'recipes/pages/home.html'
+
+class RecipeListViewApi(RecipeListViewBase):
+    def render_to_response(self, context, **response_kwargs):
+        recipes_qs = self.get_queryset()
+        data = list(recipes_qs.values())
+
+        return JsonResponse(data, safe=False, **response_kwargs)
+
 
 class RecipeListViewCategory(RecipeListViewBase):
     template_name = 'recipes/pages/category.html'
@@ -76,3 +86,13 @@ class RecipeDetailView(DetailView):
         })
 
         return ctx
+
+class RecipeDetailApi(RecipeDetailView):
+    def render_to_response(self, context, **response_kwargs):
+        recipes_qs = self.get_queryset()
+        data = list(recipes_qs.values())
+
+        return JsonResponse(
+            data,
+            safe=False
+        )

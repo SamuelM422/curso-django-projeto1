@@ -1,9 +1,10 @@
 django-stubs[compatible-mypy]
 faker
 django
+pytest-django
+django-debug-toolbar
 pillow
 pytest
-pytest-django
 coverage
 python-dotenv
 pytest-dotenv
