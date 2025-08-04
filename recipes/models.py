@@ -1,7 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.fields import GenericRelation
 from django.urls import reverse
 from django.utils.text import slugify
+from tag.models import Tag
 
 # Create your models here.
 
@@ -28,6 +30,7 @@ class Recipe(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True,
                                  blank=True, default=None)
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    tags = GenericRelation(Tag, related_query_name='recipes')
 
     def __str__(self):
         return self.title

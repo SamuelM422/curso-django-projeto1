@@ -1,4 +1,5 @@
 from recipes.models import Recipe
+from django.db.models import Manager
 from django.views.generic import ListView
 import os
 from utils.pagination import make_pagination
@@ -6,7 +7,11 @@ from utils.pagination import make_pagination
 # Constants
 PER_PAGE = int(os.getenv('PER_PAGE', 6))
 
+class RecipeManager(Manager):
+    ...
+
 class RecipeListViewBase(ListView):
+    objects: Manager = RecipeManager()
     model = Recipe
     context_object_name = 'recipes'
     paginate_by = None

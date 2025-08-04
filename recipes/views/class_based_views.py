@@ -4,7 +4,6 @@ from recipes.views.base import RecipeListViewBase
 from django.views.generic import DetailView
 from django.db.models import Q
 from django.http import JsonResponse
-from django.forms.models import model_to_dict
 
 
 class RecipeListViewHome(RecipeListViewBase):
