@@ -1,11 +1,12 @@
 django-stubs[compatible-mypy]
-faker
-django
+faker~=37.4.2
+django~=5.2.4
 pytest-django
 django-debug-toolbar
 pillow
-pytest
+pytest~=8.4.1
 coverage
-python-dotenv
+python-dotenv~=1.1.1
 pytest-dotenv
-selenium
+selenium~=4.34.2
+djangorestframework~=3.16.0
