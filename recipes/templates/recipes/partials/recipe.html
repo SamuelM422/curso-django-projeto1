@@ -1,9 +1,11 @@
- <div class="recipe recipe-list-item">
+{% load i18n %}
+
+<div class="recipe recipe-list-item">
     <div class="recipe-cover">
         <a href="{{ recipe.get_absolute_url }}">
             <img src="{{recipe.cover.url}}" alt="placeholder">
         </a>
-        
+
     </div>
     <div class="recipe-title-container">
         <a href="{{ recipe.get_absolute_url }}">
@@ -43,13 +45,13 @@
             {{recipe.description}}
         </p>
     </div>
-    
+
     <div>
         <div class="recipe-meta-container">
             <div class="recipe-meta recipe-preparation">
                 <h3 class="recipe-meta-title">
                     <i class="fas fa-stopwatch"></i>
-                    Preparo
+                    {% translate 'Preparation' %}
                 </h3>
                 <div class="recipe-meta-text">
                     {{recipe.preparation_time}} {{recipe.preparation_time_unit}}
@@ -58,19 +60,19 @@
             <div class="recipe-meta recipe-servings">
                 <h3 class="recipe-meta-title">
                     <i class="fas fa-pizza-slice"></i>
-                    Porções
+                    {% translate 'Servings' %}
                 </h3>
                 <div class="recipe-meta-text">
                     {{recipe.servings}} {{recipe.servings_unit}}
                 </div>
             </div>
         </div>
-        
+
         {% if is_detail_page is not True %}
             <footer class="recipe-footer">
                 <a href="{{ recipe.get_absolute_url }}" class="recipe-read-more button button-dark button-full-width">
                     <i class="fas fa-eye"></i>
-                    <span>ver mais...</span>
+                    <span>{% translate 'read more' %}...</span>
                 </a>
             </footer>
         {% endif %}
@@ -80,7 +82,7 @@
                 {% if recipe.preparation_steps_is_html is True %}
                     {{ recipe.preparation_steps|safe }}
                 {% else %}
-                    
+
                     {{recipe.preparation_steps|linebreaksbr}}
                 {% endif %}
 

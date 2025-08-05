@@ -1,6 +1,7 @@
 from recipes.models import Recipe
 from django.db.models import Manager
 from django.views.generic import ListView
+from django.utils import translation
 import os
 from utils.pagination import make_pagination
 
@@ -30,10 +31,12 @@ class RecipeListViewBase(ListView):
         ctx = super().get_context_data(*args, **kwargs)
         pagination_range, page_object = make_pagination(self.request, ctx.get('recipes'), PER_PAGE)
 
+        html_language = translation.get_language()
         ctx.update({
             'pagination_range': pagination_range,
             'recipes': page_object,
             'title': ctx.get('recipes')[0].category.name if ctx.get('recipes') else 'No recipes',
+            'html_language': html_language,
         })
 
         return ctx
