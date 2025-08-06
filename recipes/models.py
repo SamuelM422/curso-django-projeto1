@@ -17,13 +17,16 @@ class Category(models.Model):
 
 class RecipeManager(models.Manager):
     def get_published(self):
-        return self.filter(is_published=True).annotate(
+        return (self.filter(is_published=True).annotate(
             author_full_name=Concat(
                 F('author__first_name'), Value(' '),
                 F('author__last_name'), Value(' ('),
                 F('author__username'), Value(')'),
             )
         ).order_by('-id')
+        .select_related('category', 'author')
+        .prefetch_related('tags')
+        )
 
 
 class Recipe(models.Model):
