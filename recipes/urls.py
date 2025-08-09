@@ -3,8 +3,20 @@ import recipes.views.class_based_views as class_based_views
 import recipes.views.theory as theory_view
 import recipes.views.api as api_view
 import recipes.views.api_class_based_views as api_class_based_views
+from rest_framework.routers import SimpleRouter
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+    TokenVerifyView
+)
 
 app_name = 'recipes'
+
+recipe_api_v2_router = SimpleRouter(trailing_slash=True)
+recipe_api_v2_router.register(
+    'recipes/api/v2',
+    api_class_based_views.RecipeAPIv2ViewSet,
+)
 
 urlpatterns = [
     path("", class_based_views.RecipeListViewHome.as_view(), name="home"),
@@ -15,18 +27,10 @@ urlpatterns = [
     path('recipes/api/v1/<int:pk>/', class_based_views.RecipeDetailApi.as_view(), name='recipes_api_v1_detail'),
     path('recipes/theory', theory_view.theory, name='theory'),
     path('recipes/tags/<slug:slug>/', class_based_views.RecipeListViewTag.as_view(), name='tags'),
-    path('recipes/api/v2/', api_class_based_views.RecipeAPIv2ViewSet.as_view(
-        {
-            'get': 'list',
-            'post': 'create',
-        }
-    ), name='recipes_api_v2'),
-    path('recipes/api/v2/<int:pk>/', api_class_based_views.RecipeAPIv2ViewSet.as_view(
-        {
-            'get': 'retrieve',
-            'patch': 'partial_update',
-            'delete': 'destroy',
-        }
-    ), name='recipes_api_v2_detail'),
-    path('recipes/api/v2/tag/<int:pk>/', api_view.tag_api_detail, name='recipes_api_v2_tag')
+    path('recipes/api/v2/tag/<int:pk>/', api_view.tag_api_detail, name='recipes_api_v2_tag'),
+    path('recipes/api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('recipes/api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('recipes/api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 ]
+
+urlpatterns += recipe_api_v2_router.urls

@@ -16,6 +16,11 @@ class RecipeAPIv2ViewSet(ModelViewSet):
     serializer_class = RecipeSerializer
     pagination_class = RecipeAPIv2Pagination
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        return qs
+
 class RecipeAPIv2List(ListCreateAPIView):
     queryset = Recipe.objects.get_published()
     serializer_class = RecipeSerializer

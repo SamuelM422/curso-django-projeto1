@@ -10,3 +10,4 @@ python-dotenv~=1.1.1
 pytest-dotenv
 selenium~=4.34.2
 djangorestframework~=3.16.0
+djangorestframework-simplejwt
